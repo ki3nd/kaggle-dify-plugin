@@ -1,0 +1,37 @@
+identity:
+  author: "ki3nd"
+  name: "kaggle"
+  label:
+    en_US: "Kaggle"
+    zh_Hans: "Kaggle"
+    pt_BR: "Kaggle"
+    ja_JP: "Kaggle"
+  description:
+    en_US: "A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute."
+    zh_Hans: "A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute."
+    pt_BR: "A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute."
+    ja_JP: "A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute."
+  icon: "icon.svg"
+
+credentials_schema:
+  - name: "api_token"
+    type: "secret-input"
+    required: true
+    label:
+      en_US: "KAGGLE_API_TOKEN"
+      zh_Hans: "KAGGLE_API_TOKEN"
+      pt_BR: "KAGGLE_API_TOKEN"
+      ja_JP: "KAGGLE_API_TOKEN"
+    placeholder:
+      en_US: "your_kaggle_api_token"
+      zh_Hans: "your_kaggle_api_token"
+      pt_BR: "your_kaggle_api_token"
+      ja_JP: "your_kaggle_api_token"
+    help:
+      en_US: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
+      zh_Hans: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
+      pt_BR: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
+      ja_JP: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
+extra:
+  python:
+    source: provider/kaggle.py

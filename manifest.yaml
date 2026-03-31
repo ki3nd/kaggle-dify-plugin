@@ -1,0 +1,37 @@
+version: 0.0.1
+type: plugin
+author: ki3nd
+name: kaggle_tool
+label:
+  en_US: Kaggle
+  ja_JP: Kaggle
+  zh_Hans: Kaggle
+  pt_BR: Kaggle
+description:
+  en_US: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+  ja_JP: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+  zh_Hans: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+  pt_BR: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+icon: icon.svg
+icon_dark: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    tool:
+      enabled: true
+plugins:
+  tools:
+    - provider/kaggle.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: 0.0.1
+created_at: 2026-03-30T10:25:30.7269723+07:00
+privacy: PRIVACY.md
+verified: false
