@@ -1,0 +1,34 @@
+identity:
+  name: "get_kernel_metadata"
+  author: "ki3nd"
+  label:
+    en_US: "Get Kernel Metadata"
+    zh_Hans: "Get Kernel Metadata"
+    pt_BR: "Get Kernel Metadata"
+    ja_JP: "Get Kernel Metadata"
+description:
+  human:
+    en_US: "Fetch metadata for a Kaggle kernel."
+    zh_Hans: "Fetch metadata for a Kaggle kernel."
+    pt_BR: "Fetch metadata for a Kaggle kernel."
+    ja_JP: "Fetch metadata for a Kaggle kernel."
+  llm: "Fetch metadata for a Kaggle kernel by kernel ID."
+parameters:
+  - name: kernel_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Kernel ID
+      zh_Hans: Kernel ID
+      pt_BR: Kernel ID
+      ja_JP: Kernel ID
+    human_description:
+      en_US: "Kernel identifier in the format owner/kernel-slug."
+      zh_Hans: "Kernel identifier in the format owner/kernel-slug."
+      pt_BR: "Kernel identifier in the format owner/kernel-slug."
+      ja_JP: "Kernel identifier in the format owner/kernel-slug."
+    llm_description: "Kaggle kernel identifier in the format owner/kernel-slug."
+extra:
+  python:
+    source: tools/get_kernel_metadata.py
