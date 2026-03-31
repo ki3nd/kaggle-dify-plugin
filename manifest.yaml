@@ -8,10 +8,10 @@ label:
   zh_Hans: Kaggle
   pt_BR: Kaggle
 description:
-  en_US: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
-  ja_JP: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
-  zh_Hans: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
-  pt_BR: A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+  en_US: A plugin that allows you to run code on Kaggle kernels with flexible CPU or GPU compute.
+  ja_JP: A plugin that allows you to run code on Kaggle kernels with flexible CPU or GPU compute.
+  zh_Hans: A plugin that allows you to run code on Kaggle kernels with flexible CPU or GPU compute.
+  pt_BR: A plugin that allows you to run code on Kaggle kernels with flexible CPU or GPU compute.
 icon: icon.svg
 icon_dark: icon.svg
 resource:

@@ -6,4 +6,4 @@
 
 ### Description
 
-A plugin that runs code on Kaggle kernels with flexible CPU or GPU compute.
+A plugin that allows you to run code on Kaggle kernels with flexible CPU or GPU compute.
