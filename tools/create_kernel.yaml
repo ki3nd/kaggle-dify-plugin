@@ -1,0 +1,66 @@
+identity:
+  name: "create_kernel"
+  author: "ki3nd"
+  label:
+    en_US: "Create Kernel"
+    zh_Hans: "Create Kernel"
+    pt_BR: "Create Kernel"
+    ja_JP: "Create Kernel"
+description:
+  human:
+    en_US: "Create a new Kaggle kernel with a simple starter Python script."
+    zh_Hans: "Create a new Kaggle kernel with a simple starter Python script."
+    pt_BR: "Create a new Kaggle kernel with a simple starter Python script."
+    ja_JP: "Create a new Kaggle kernel with a simple starter Python script."
+  llm: "Create a new Kaggle kernel. Initialize kernel metadata in a temporary folder, validate the title, ensure no existing owned kernel has the same name, write a simple starter script into main.py, and push the new kernel."
+parameters:
+  - name: title
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Title
+      zh_Hans: Title
+      pt_BR: Title
+      ja_JP: Title
+    human_description:
+      en_US: "Kernel title. Must be at least 5 characters long."
+      zh_Hans: "Kernel title. Must be at least 5 characters long."
+      pt_BR: "Kernel title. Must be at least 5 characters long."
+      ja_JP: "Kernel title. Must be at least 5 characters long."
+    llm_description: "Title for the new Kaggle kernel. Raise an error if the title has fewer than 5 characters or matches an existing owned kernel name."
+  - name: is_private
+    type: boolean
+    required: false
+    form: llm
+    default: true
+    label:
+      en_US: Private
+      zh_Hans: Private
+      pt_BR: Private
+      ja_JP: Private
+    human_description:
+      en_US: "Whether the new kernel should be private. Defaults to true."
+      zh_Hans: "Whether the new kernel should be private. Defaults to true."
+      pt_BR: "Whether the new kernel should be private. Defaults to true."
+      ja_JP: "Whether the new kernel should be private. Defaults to true."
+    llm_description: "Whether the new kernel should be private. Default is true."
+  - name: enable_internet
+    type: boolean
+    required: false
+    form: llm
+    default: true
+    label:
+      en_US: Enable Internet
+      zh_Hans: Enable Internet
+      pt_BR: Enable Internet
+      ja_JP: Enable Internet
+    human_description:
+      en_US: "Whether the new kernel should have internet access. Defaults to true."
+      zh_Hans: "Whether the new kernel should have internet access. Defaults to true."
+      pt_BR: "Whether the new kernel should have internet access. Defaults to true."
+      ja_JP: "Whether the new kernel should have internet access. Defaults to true."
+    llm_description: "Whether the new kernel should have internet access. Default is true."
+extra:
+  python:
+    source: tools/create_kernel.py

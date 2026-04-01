@@ -33,7 +33,11 @@ credentials_schema:
       pt_BR: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
       ja_JP: "Paste your Kaggle API token. It will be used as KAGGLE_API_TOKEN."
 tools:
+  - tools/kaggle_user_kernels.yaml
+  - tools/create_kernel.yaml
   - tools/get_kernel_metadata.yaml
+  - tools/get_kernel_status.yaml
+  - tools/run_kernel_code.yaml
 extra:
   python:
     source: provider/kaggle.py

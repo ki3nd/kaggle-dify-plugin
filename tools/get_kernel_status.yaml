@@ -1,0 +1,34 @@
+identity:
+  name: "get_kernel_status"
+  author: "ki3nd"
+  label:
+    en_US: "Get Kernel Status"
+    zh_Hans: "Get Kernel Status"
+    pt_BR: "Get Kernel Status"
+    ja_JP: "Get Kernel Status"
+description:
+  human:
+    en_US: "Fetch the latest run status for a Kaggle kernel and include its metadata."
+    zh_Hans: "Fetch the latest run status for a Kaggle kernel and include its metadata."
+    pt_BR: "Fetch the latest run status for a Kaggle kernel and include its metadata."
+    ja_JP: "Fetch the latest run status for a Kaggle kernel and include its metadata."
+  llm: "Fetch the latest Kaggle kernel run status by kernel ID and return the kernel metadata together with the status payload."
+parameters:
+  - name: kernel_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Kernel ID
+      zh_Hans: Kernel ID
+      pt_BR: Kernel ID
+      ja_JP: Kernel ID
+    human_description:
+      en_US: "Kernel identifier in the format owner/kernel-slug."
+      zh_Hans: "Kernel identifier in the format owner/kernel-slug."
+      pt_BR: "Kernel identifier in the format owner/kernel-slug."
+      ja_JP: "Kernel identifier in the format owner/kernel-slug."
+    llm_description: "Kaggle kernel identifier in the format owner/kernel-slug."
+extra:
+  python:
+    source: tools/get_kernel_status.py

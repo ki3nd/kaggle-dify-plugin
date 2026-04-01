@@ -1,0 +1,34 @@
+identity:
+  name: "kaggle_user_kernels"
+  author: "ki3nd"
+  label:
+    en_US: "Kaggle User Kernels"
+    zh_Hans: "Kaggle User Kernels"
+    pt_BR: "Kaggle User Kernels"
+    ja_JP: "Kaggle User Kernels"
+description:
+  human:
+    en_US: "List kernels for a Kaggle username, or for the authenticated account when Username is empty."
+    zh_Hans: "List kernels for a Kaggle username, or for the authenticated account when Username is empty."
+    pt_BR: "List kernels for a Kaggle username, or for the authenticated account when Username is empty."
+    ja_JP: "List kernels for a Kaggle username, or for the authenticated account when Username is empty."
+  llm: "List Kaggle kernels and return only kernel_id and kernel_name. If kaggle_user is empty, list kernels for the authenticated account. If kaggle_user is provided, list kernels for that user."
+parameters:
+  - name: kaggle_user
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Username
+      zh_Hans: Username
+      pt_BR: Username
+      ja_JP: Username
+    human_description:
+      en_US: "Kaggle username. Leave empty to use the authenticated account."
+      zh_Hans: "Kaggle username. Leave empty to use the authenticated account."
+      pt_BR: "Kaggle username. Leave empty to use the authenticated account."
+      ja_JP: "Kaggle username. Leave empty to use the authenticated account."
+    llm_description: "Kaggle username. If omitted or empty, the tool lists kernels for the authenticated account."
+extra:
+  python:
+    source: tools/kaggle_user_kernels.py

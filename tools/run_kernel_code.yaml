@@ -1,0 +1,90 @@
+identity:
+  name: "run_kernel_code"
+  author: "ki3nd"
+  label:
+    en_US: "Run Kernel Code"
+    zh_Hans: "Run Kernel Code"
+    pt_BR: "Run Kernel Code"
+    ja_JP: "Run Kernel Code"
+description:
+  human:
+    en_US: "Update an existing Kaggle kernel with Python script code and run it."
+    zh_Hans: "Update an existing Kaggle kernel with Python script code and run it."
+    pt_BR: "Update an existing Kaggle kernel with Python script code and run it."
+    ja_JP: "Update an existing Kaggle kernel with Python script code and run it."
+  llm: "Fetch an existing Kaggle kernel, convert metadata to a Python script kernel, write the provided code to a .py file, and push it to run on Kaggle."
+parameters:
+  - name: kernel_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Kernel ID
+      zh_Hans: Kernel ID
+      pt_BR: Kernel ID
+      ja_JP: Kernel ID
+    human_description:
+      en_US: "Existing kernel identifier in the format owner/kernel-slug."
+      zh_Hans: "Existing kernel identifier in the format owner/kernel-slug."
+      pt_BR: "Existing kernel identifier in the format owner/kernel-slug."
+      ja_JP: "Existing kernel identifier in the format owner/kernel-slug."
+    llm_description: "Existing Kaggle kernel identifier in the format owner/kernel-slug. The tool raises an exception if the kernel does not exist or is inaccessible."
+  - name: code
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Code
+      zh_Hans: Code
+      pt_BR: Code
+      ja_JP: Code
+    human_description:
+      en_US: "Python code to write into the kernel script file."
+      zh_Hans: "Python code to write into the kernel script file."
+      pt_BR: "Python code to write into the kernel script file."
+      ja_JP: "Python code to write into the kernel script file."
+    llm_description: "Python source code that will be saved to the generated .py file before the kernel is pushed."
+  - name: accelerator
+    human_description:
+      en_US: "Compute accelerator to use for this run."
+      zh_Hans: "Compute accelerator to use for this run."
+      pt_BR: "Compute accelerator to use for this run."
+      ja_JP: "Compute accelerator to use for this run."
+    label:
+      en_US: Accelerator
+      zh_Hans: Accelerator
+      pt_BR: Accelerator
+      ja_JP: Accelerator
+    llm_description: "Select one of None, NvidiaTeslaP100, NvidiaTeslaT4, or TpuV5E8."
+    required: false
+    default: "None"
+    form: llm
+    type: select
+    options:
+    - value: "None"
+      label:
+        en_US: "None"
+        zh_Hans: "None"
+        pt_BR: "None"
+        ja_JP: "None"
+    - value: "NvidiaTeslaP100"
+      label:
+        en_US: "Nvidia Tesla P100"
+        zh_Hans: "Nvidia Tesla P100"
+        pt_BR: "Nvidia Tesla P100"
+        ja_JP: "Nvidia Tesla P100"
+    - value: "NvidiaTeslaT4"
+      label:
+        en_US: "Nvidia Tesla T4"
+        zh_Hans: "Nvidia Tesla T4"
+        pt_BR: "Nvidia Tesla T4"
+        ja_JP: "Nvidia Tesla T4"
+    - value: "TpuV5E8"
+      label:
+        en_US: "TPU v5e-8"
+        zh_Hans: "TPU v5e-8"
+        pt_BR: "TPU v5e-8"
+        ja_JP: "TPU v5e-8"
+extra:
+  python:
+    source: tools/run_kernel_code.py
