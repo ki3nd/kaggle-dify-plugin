@@ -1,7 +1,9 @@
-from collections.abc import Generator
+from __future__ import annotations
+
 import json
 import os
 import tempfile
+from collections.abc import Generator
 from typing import Any
 
 from dify_plugin import Tool
