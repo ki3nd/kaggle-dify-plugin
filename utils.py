@@ -52,12 +52,14 @@ def build_authenticated_kaggle_api(api_token: str):
         return api
 
 
-def parse_kernel_id(kernel_id: str) -> tuple[str, str]:
+def parse_kernel_id(kernel_id: str, owner: str | None = None) -> tuple[str, str]:
     normalized_kernel_id = str(kernel_id or "").strip()
     if not normalized_kernel_id:
         raise ValueError("kernel_id is required.")
     if "/" not in normalized_kernel_id:
-        raise ValueError("kernel_id must be in the format 'owner/kernel-slug'.")
+        if not owner:
+            raise ValueError("kernel_id must be in the format 'owner/kernel-slug'.")
+        normalized_kernel_id = f"{owner}/{normalized_kernel_id}"
 
     owner_slug, kernel_slug = normalized_kernel_id.split("/", 1)
     if not owner_slug or not kernel_slug:
@@ -168,18 +170,32 @@ def ensure_unique_kernel_title(api: Any, title: str) -> None:
 
 
 def fetch_kernel(api: Any, kernel_id: str) -> Any:
-    owner_slug, kernel_slug = parse_kernel_id(kernel_id)
+    import requests
+
+    owner = api.config_values.get(api.CONFIG_NAME_USER)
+    owner_slug, kernel_slug = parse_kernel_id(kernel_id, owner=owner)
     from kagglesdk.kernels.types.kernels_api_service import ApiGetKernelRequest
 
     with api.build_kaggle_client() as kaggle:
         request = ApiGetKernelRequest()
         request.user_name = owner_slug
         request.kernel_slug = kernel_slug
-        return kaggle.kernels.kernels_api_client.get_kernel(request)
+        try:
+            return kaggle.kernels.kernels_api_client.get_kernel(request)
+        except requests.exceptions.HTTPError as e:
+            if e.response is not None:
+                if e.response.status_code == 404:
+                    raise ValueError(f"Kernel '{kernel_id}' not found.") from e
+                if e.response.status_code == 403:
+                    raise ValueError(
+                        f"Access denied to kernel '{kernel_id}'. It may be private or you lack permission."
+                    ) from e
+            raise
 
 
 def fetch_kernel_status(api: Any, kernel_id: str) -> Any:
-    normalized_kernel_id = "/".join(parse_kernel_id(kernel_id))
+    owner = api.config_values.get(api.CONFIG_NAME_USER)
+    normalized_kernel_id = "/".join(parse_kernel_id(kernel_id, owner=owner))
     return api.kernels_status(normalized_kernel_id)
 
 

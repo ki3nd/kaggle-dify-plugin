@@ -24,11 +24,11 @@ parameters:
       pt_BR: Kernel ID
       ja_JP: Kernel ID
     human_description:
-      en_US: "Kernel identifier in the format owner/kernel-slug."
-      zh_Hans: "Kernel identifier in the format owner/kernel-slug."
-      pt_BR: "Kernel identifier in the format owner/kernel-slug."
-      ja_JP: "Kernel identifier in the format owner/kernel-slug."
-    llm_description: "Kaggle kernel identifier in the format owner/kernel-slug."
+      en_US: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      zh_Hans: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      pt_BR: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      ja_JP: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+    llm_description: "Kaggle kernel identifier as owner/kernel-slug (e.g. alice/my-kernel), or just kernel-slug to auto-prefix with the authenticated user's username."
 extra:
   python:
     source: tools/get_kernel_status.py

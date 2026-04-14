@@ -24,14 +24,14 @@ parameters:
       pt_BR: Kernel ID
       ja_JP: Kernel ID
     human_description:
-      en_US: "Kernel identifier in the format owner/kernel-slug."
-      zh_Hans: "Kernel identifier in the format owner/kernel-slug."
-      pt_BR: "Kernel identifier in the format owner/kernel-slug."
-      ja_JP: "Kernel identifier in the format owner/kernel-slug."
-    llm_description: "Kaggle kernel identifier in the format owner/kernel-slug."
+      en_US: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      zh_Hans: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      pt_BR: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      ja_JP: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+    llm_description: "Kaggle kernel identifier as owner/kernel-slug (e.g. alice/my-kernel), or just kernel-slug to auto-prefix with the authenticated user's username."
   - name: file_path
     type: string
-    required: true
+    required: false
     form: llm
     label:
       en_US: File Path
@@ -39,11 +39,11 @@ parameters:
       pt_BR: File Path
       ja_JP: File Path
     human_description:
-      en_US: "Kaggle path of the output file to retrieve, e.g. /kaggle/working/output.csv or /kaggle/working/images/result.png"
-      zh_Hans: "Kaggle path of the output file to retrieve, e.g. /kaggle/working/output.csv or /kaggle/working/images/result.png"
-      pt_BR: "Kaggle path of the output file to retrieve, e.g. /kaggle/working/output.csv or /kaggle/working/images/result.png"
-      ja_JP: "Kaggle path of the output file to retrieve, e.g. /kaggle/working/output.csv or /kaggle/working/images/result.png"
-    llm_description: "Absolute Kaggle path to the specific output file, e.g. /kaggle/working/output.csv. Only a single file path is supported (not a directory)."
+      en_US: "Path of the output file to retrieve. Accepts absolute Kaggle paths (e.g. /kaggle/working/output.csv) or relative paths (e.g. images/1.png). Leave empty to return only the kernel logs without downloading any file."
+      zh_Hans: "Path of the output file to retrieve. Accepts absolute Kaggle paths (e.g. /kaggle/working/output.csv) or relative paths (e.g. images/1.png). Leave empty to return only the kernel logs without downloading any file."
+      pt_BR: "Path of the output file to retrieve. Accepts absolute Kaggle paths (e.g. /kaggle/working/output.csv) or relative paths (e.g. images/1.png). Leave empty to return only the kernel logs without downloading any file."
+      ja_JP: "Path of the output file to retrieve. Accepts absolute Kaggle paths (e.g. /kaggle/working/output.csv) or relative paths (e.g. images/1.png). Leave empty to return only the kernel logs without downloading any file."
+    llm_description: "Path to a specific output file. Accepts absolute Kaggle paths (e.g. /kaggle/working/output.csv) or relative paths under /kaggle/working/ (e.g. images/1.png). Omit to return only the kernel logs without downloading any file."
 extra:
   python:
     source: tools/get_kernel_output.py

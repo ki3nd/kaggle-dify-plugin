@@ -120,23 +120,22 @@ class KaggleGetKernelOutputTool(Tool):
         kernel_id = str(tool_parameters.get("kernel_id", "")).strip()
         file_path = str(tool_parameters.get("file_path", "")).strip()
 
-        if not file_path:
-            raise ValueError("file_path is required.")
-
-        # Validate kernel_id format early.
-        owner_slug, kernel_slug = parse_kernel_id(kernel_id)
-        normalized_kernel_id = f"{owner_slug}/{kernel_slug}"
-
-        relative_path = _strip_kaggle_prefix(file_path)
-        if not relative_path:
-            raise ValueError(
-                f"file_path '{file_path}' resolves to an empty relative path. "
-                "Provide a specific file path, e.g. /kaggle/working/output.csv"
-            )
+        relative_path: str | None = None
+        if file_path:
+            relative_path = _strip_kaggle_prefix(file_path)
+            if not relative_path:
+                raise ValueError(
+                    f"file_path '{file_path}' resolves to an empty relative path. "
+                    "Provide a specific file path, e.g. /kaggle/working/output.csv"
+                )
 
         api = build_authenticated_kaggle_api(
             str(self.runtime.credentials.get("api_token", "")).strip()
         )
+
+        owner = api.config_values.get(api.CONFIG_NAME_USER)
+        owner_slug, kernel_slug = parse_kernel_id(kernel_id, owner=owner)
+        normalized_kernel_id = f"{owner_slug}/{kernel_slug}"
 
         # ── 1. Check kernel status ────────────────────────────────────────────
         status_response = fetch_kernel_status(api, normalized_kernel_id)
@@ -169,43 +168,55 @@ class KaggleGetKernelOutputTool(Tool):
             )
             return
 
-        # ── 2. Download only the requested file ───────────────────────────────
-        # file_pattern is anchored to match exactly relative_path among item.file_name entries.
-        file_pattern = "^" + re.escape(relative_path) + "$"
-
         temp_root = os.path.join(os.getcwd(), "temp")
         os.makedirs(temp_root, exist_ok=True)
 
         with tempfile.TemporaryDirectory(
             prefix="kaggle-output-", dir=temp_root
         ) as temp_dir:
-            outfiles, _ = api.kernels_output(
-                normalized_kernel_id,
-                temp_dir,
-                file_pattern=file_pattern,
-                force=True,
-                quiet=True,
-            )
+            if relative_path:
+                # ── 2a. Download only the requested file ──────────────────────
+                file_pattern = "^" + re.escape(relative_path) + "$"
+                outfiles, _ = api.kernels_output(
+                    normalized_kernel_id,
+                    temp_dir,
+                    file_pattern=file_pattern,
+                    force=True,
+                    quiet=True,
+                )
 
-            logs = _read_log_file(outfiles)
-            target_file = _find_target_file(outfiles, relative_path)
+                logs = _read_log_file(outfiles)
+                target_file = _find_target_file(outfiles, relative_path)
 
-            if target_file is None:
-                msg = f"File not found in kernel output: '{file_path}'."
-                if logs:
-                    msg += f"\nKernel logs:\n{logs}"
-                yield self.create_text_message(msg)
-                return
+                if target_file is None:
+                    msg = f"File not found in kernel output: '{file_path}'."
+                    if logs:
+                        msg += f"\nKernel logs:\n{logs}"
+                    yield self.create_text_message(msg)
+                    return
 
-            # ── 3. Yield the file ────────────────────────────────────────────
-            yield from _yield_file(self, target_file, relative_path)
+                yield from _yield_file(self, target_file, relative_path)
+                yield self.create_json_message(
+                    {
+                        "kernel_id": normalized_kernel_id,
+                        "file_path": file_path,
+                        "relative_path": relative_path,
+                        "logs": logs,
+                    }
+                )
+            else:
+                # ── 2b. No file requested — return logs only ──────────────────
+                outfiles, _ = api.kernels_output(
+                    normalized_kernel_id,
+                    temp_dir,
+                    force=True,
+                    quiet=True,
+                )
 
-            # ── 4. Yield metadata (logs) after ───────────────────────────────
-            yield self.create_json_message(
-                {
-                    "kernel_id": normalized_kernel_id,
-                    "file_path": file_path,
-                    "relative_path": relative_path,
-                    "logs": logs,
-                }
-            )
+                logs = _read_log_file(outfiles)
+                yield self.create_json_message(
+                    {
+                        "kernel_id": normalized_kernel_id,
+                        "logs": logs,
+                    }
+                )
