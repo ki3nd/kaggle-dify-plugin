@@ -265,6 +265,19 @@ def build_kernel_metadata(
     return metadata
 
 
+def read_log_file(log_path: str) -> str:
+    """Read the kernel log file at the exact path written by kernels_output.
+
+    The Kaggle API always writes the log to {temp_dir}/{kernel_slug}.log.
+    Callers should construct this path themselves and pass it directly.
+    """
+    try:
+        with open(log_path, encoding="utf-8", errors="replace") as f:
+            return f.read()
+    except OSError:
+        return ""
+
+
 def serialize_api_value(value: Any) -> Any:
     if value is None or isinstance(value, (str, int, float, bool)):
         return value

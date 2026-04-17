@@ -100,6 +100,20 @@ If the kernel is still running or queued, an informative message is returned and
 
 ---
 
+### Download Kernel Output
+
+Download **all** output files from a completed kernel and return them as a single zip archive. Use this tool when you need all output files at once rather than a specific one.
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `kernel_id` | Yes | `owner/kernel-slug` or just `kernel-slug` (auto-prefixed with your username). |
+
+**Returns:** a zip blob named `{kernel-slug}-output.zip` followed by `{ kernel_id, zip_file, files[], logs }`.
+
+If the kernel produced no output files, an informative message is returned along with the logs. Status checks (running, queued, failed) behave the same as **Get Kernel Output**.
+
+---
+
 ## Kernel ID shorthand
 
 Every tool that accepts a `kernel_id` supports a short form. If you omit the `owner/` prefix, the plugin automatically prepends the authenticated user's username:
@@ -113,9 +127,11 @@ alice/her-analysis   →  alice/her-analysis  (unchanged)
 
 ```
 Create Kernel  →  Run Kernel Code  →  Get Kernel Status (poll)  →  Get Kernel Output
+                                                                 →  Download Kernel Output (all files as zip)
 ```
 
 1. **Create Kernel** once to get a persistent `kernel_id`.
 2. **Run Kernel Code** to push new code and trigger execution.
 3. **Get Kernel Status** in a loop until `status == "complete"`.
-4. **Get Kernel Output** to retrieve result files or logs.
+4. **Get Kernel Output** to retrieve a specific result file or logs.
+5. **Download Kernel Output** to retrieve all output files packaged as a zip.

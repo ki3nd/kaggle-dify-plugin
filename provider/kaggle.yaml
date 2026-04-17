@@ -39,6 +39,7 @@ tools:
   - tools/get_kernel_status.yaml
   - tools/run_kernel_code.yaml
   - tools/get_kernel_output.yaml
+  - tools/download_kernel_output.yaml
 extra:
   python:
     source: provider/kaggle.py

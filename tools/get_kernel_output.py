@@ -14,6 +14,7 @@ from utils import (
     build_authenticated_kaggle_api,
     fetch_kernel_status,
     parse_kernel_id,
+    read_log_file,
     serialize_api_value,
 )
 
@@ -53,22 +54,10 @@ def _strip_kaggle_prefix(file_path: str) -> str:
     return normalized.lstrip("/")
 
 
-def _read_log_file(outfiles: list[str]) -> str:
-    """Read the kernel log file written by kernels_output (ends with .log)."""
+def _find_target_file(outfiles: list[str], relative_path: str, log_path: str) -> str | None:
+    """Return the downloaded file path matching relative_path, excluding the kernel log file."""
     for path in outfiles:
-        if path.endswith(".log"):
-            try:
-                with open(path, encoding="utf-8", errors="replace") as f:
-                    return f.read()
-            except OSError:
-                pass
-    return ""
-
-
-def _find_target_file(outfiles: list[str], relative_path: str) -> str | None:
-    """Return the downloaded file path matching relative_path, excluding the log file."""
-    for path in outfiles:
-        if path.endswith(".log"):
+        if path == log_path:
             continue
         # Match by the relative_path suffix to handle any temp-dir prefix.
         if path.replace("\\", "/").endswith(relative_path.replace("\\", "/")):
@@ -90,7 +79,7 @@ def _yield_file(
         mime_type = mime_type or "image/png"
         with open(file_path, "rb") as f:
             data = f.read()
-        yield tool.create_blob_message(data, meta={"mime_type": mime_type, "file_name": relative_path})
+        yield tool.create_blob_message(data, meta={"mime_type": mime_type, "filename": relative_path})
 
     elif ext in _TEXT_EXTENSIONS:
         with open(file_path, encoding="utf-8", errors="replace") as f:
@@ -112,7 +101,7 @@ def _yield_file(
         mime_type = mime_type or "application/octet-stream"
         with open(file_path, "rb") as f:
             data = f.read()
-        yield tool.create_blob_message(data, meta={"mime_type": mime_type, "file_name": relative_path})
+        yield tool.create_blob_message(data, meta={"mime_type": mime_type, "filename": relative_path})
 
 
 class KaggleGetKernelOutputTool(Tool):
@@ -174,6 +163,8 @@ class KaggleGetKernelOutputTool(Tool):
         with tempfile.TemporaryDirectory(
             prefix="kaggle-output-", dir=temp_root
         ) as temp_dir:
+            log_path = os.path.join(temp_dir, f"{kernel_slug}.log")
+
             if relative_path:
                 # ── 2a. Download only the requested file ──────────────────────
                 file_pattern = "^" + re.escape(relative_path) + "$"
@@ -185,8 +176,8 @@ class KaggleGetKernelOutputTool(Tool):
                     quiet=True,
                 )
 
-                logs = _read_log_file(outfiles)
-                target_file = _find_target_file(outfiles, relative_path)
+                logs = read_log_file(log_path)
+                target_file = _find_target_file(outfiles, relative_path, log_path)
 
                 if target_file is None:
                     msg = f"File not found in kernel output: '{file_path}'."
@@ -213,7 +204,7 @@ class KaggleGetKernelOutputTool(Tool):
                     quiet=True,
                 )
 
-                logs = _read_log_file(outfiles)
+                logs = read_log_file(log_path)
                 yield self.create_json_message(
                     {
                         "kernel_id": normalized_kernel_id,

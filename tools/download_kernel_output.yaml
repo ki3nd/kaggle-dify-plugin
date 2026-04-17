@@ -1,0 +1,34 @@
+identity:
+  name: "download_kernel_output"
+  author: "ki3nd"
+  label:
+    en_US: "Download Kernel Output"
+    zh_Hans: "Download Kernel Output"
+    pt_BR: "Download Kernel Output"
+    ja_JP: "Download Kernel Output"
+description:
+  human:
+    en_US: "Download all output files from a completed Kaggle kernel and return them as a single zip archive."
+    zh_Hans: "Download all output files from a completed Kaggle kernel and return them as a single zip archive."
+    pt_BR: "Download all output files from a completed Kaggle kernel and return them as a single zip archive."
+    ja_JP: "Download all output files from a completed Kaggle kernel and return them as a single zip archive."
+  llm: "Check if a Kaggle kernel is complete, then download all its output files and return them packaged as a zip archive named {kernel-slug}-output.zip. Also returns the kernel logs and the list of archived files as metadata. Yields an informative message if the kernel is still running, queued, or has failed. Use this tool when the user wants all output files at once."
+parameters:
+  - name: kernel_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Kernel ID
+      zh_Hans: Kernel ID
+      pt_BR: Kernel ID
+      ja_JP: Kernel ID
+    human_description:
+      en_US: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      zh_Hans: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      pt_BR: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+      ja_JP: "Kernel identifier as owner/kernel-slug, or just kernel-slug to use the authenticated user as owner."
+    llm_description: "Kaggle kernel identifier as owner/kernel-slug (e.g. alice/my-kernel), or just kernel-slug to auto-prefix with the authenticated user's username."
+extra:
+  python:
+    source: tools/download_kernel_output.py
